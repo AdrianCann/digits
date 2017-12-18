@@ -56,6 +56,7 @@ score = acc_score(clf, training_set_x, training_set_y, cross_validation_set_x, c
 print("Accuracy Score: " + str(score)) # percent correct
 
 gammas = [-8,-7,-6,-5,-4,-3,-2,-1,0,1]
+
 accuracy = []
 for exp in gammas:
     gamma = 10 ** exp
@@ -64,4 +65,6 @@ for exp in gammas:
             cross_validation_set_y)
     accuracy.append(score)
 
-print(accuracy)
+plt.bar(gammas, accuracy)
+plt.show()
+# gamma best between 10 ** -6 and 10 ** -3

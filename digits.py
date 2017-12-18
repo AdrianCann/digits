@@ -44,9 +44,24 @@ print("training_set length: " + str(len(training_set_x)))
 print("cross_validation_set_x length: " + str(len(cross_validation_set_x)))
 print("test_set length: " + str(len(test_set)))
 
-clf = svm.SVC(gamma=0.001, C=100)
 
-clf.fit(training_set_x, training_set_y)
-cross_validation_predictions = clf.predict(cross_validation_set_x)
-score = accuracy_score(cross_validation_predictions, cross_validation_set_y)
+def acc_score(clf, train_x, train_y, cross_x, cross_y):
+    clf.fit(train_x, train_y)
+    cross_validation_predictions = clf.predict(cross_x)
+    score = accuracy_score(cross_y, cross_validation_predictions)
+    return score
+
+clf = svm.SVC(gamma=0.001, C=100)
+score = acc_score(clf, training_set_x, training_set_y, cross_validation_set_x, cross_validation_set_y)
 print("Accuracy Score: " + str(score)) # percent correct
+
+gammas = [-8,-7,-6,-5,-4,-3,-2,-1,0,1]
+accuracy = []
+for exp in gammas:
+    gamma = 10 ** exp
+    clf = svm.SVC(gamma=gamma, C=100)
+    score = acc_score(clf, training_set_x, training_set_y, cross_validation_set_x,
+            cross_validation_set_y)
+    accuracy.append(score)
+
+print(accuracy)

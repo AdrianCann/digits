@@ -9,14 +9,17 @@ from sklearn import svm
 from sklearn.metrics import accuracy_score
 
 digits = datasets.load_digits()
-print("Digit information")
-print("Digit data is  " + str(type(digits.data[1])))
-print("digits.data[1]")
-print(digits.data[1])
-print("Size of data[1]: " + str(digits.data[1].size))
 
-m = len(digits.data)
-print('m = ' + str(m) + ' digits total')
+def print_digit_info(digits):
+    print("Digit information")
+    print("Digit data is  " + str(type(digits.data[1])))
+    print("digits.data[1]")
+    print(digits.data[1])
+    print("Size of data[1]: " + str(digits.data[1].size))
+    m = len(digits.data)
+    print('m = ' + str(m) + ' digits total')
+
+print_digit_info(digits)
 
 # https://stackoverflow.com/questions/4601373/better-way-to-shuffle-two-numpy-arrays-in-unison
 # Although apparently sklearn ahs a ShffleSplit as well
@@ -28,10 +31,12 @@ def shuffle_in_unison(a, b):
     numpy.random.set_state(rng_state)
     numpy.random.shuffle(b)
 
+### Test shuffle ###
 print("First digits: " + str(digits.target[:5]))
 shuffle_in_unison(digits.data, digits.target)
 print("First digits: " + str(digits.target[:5]))
 
+m = len(digits.data)
 first_index = int(m * 0.6)
 training_set_x = digits.data[0:first_index]
 training_set_y = digits.target[0:first_index]
@@ -45,26 +50,28 @@ print("cross_validation_set_x length: " + str(len(cross_validation_set_x)))
 print("test_set length: " + str(len(test_set)))
 
 
-def acc_score(clf, train_x, train_y, cross_x, cross_y):
+def measure_accuracy(clf, train_x, train_y, cross_x, cross_y):
     clf.fit(train_x, train_y)
     cross_validation_predictions = clf.predict(cross_x)
     score = accuracy_score(cross_y, cross_validation_predictions)
     return score
 
-clf = svm.SVC(gamma=0.001, C=100)
-score = acc_score(clf, training_set_x, training_set_y, cross_validation_set_x, cross_validation_set_y)
-print("Accuracy Score: " + str(score)) # percent correct
 
-gammas = [-8,-7,-6,-5,-4,-3,-2,-1,0,1]
+gamma_exponents = [-8,-7,-6,-5,-4,-3,-2,-1,0,1]
 
-accuracy = []
-for exp in gammas:
-    gamma = 10 ** exp
-    clf = svm.SVC(gamma=gamma, C=100)
-    score = acc_score(clf, training_set_x, training_set_y, cross_validation_set_x,
+def accuracy_scores_for(gamma_exp, C=100):
+    accuracy = []
+    for exp in gamma_exp:
+        gamma = 10 ** exp
+        clf = svm.SVC(gamma=gamma, C=C)
+        score = measure_accuracy(clf, training_set_x, training_set_y, cross_validation_set_x,
             cross_validation_set_y)
-    accuracy.append(score)
+        print("Accuracy Score: " + str(score)) # percent correct
+        accuracy.append(score)
+    return accuracy
 
-plt.bar(gammas, accuracy)
+accuracy_scores = accuracy_scores_for(gamma_exponents)
+
+plt.bar(gamma_exponents, accuracy_scores)
 plt.show()
 # gamma best between 10 ** -6 and 10 ** -3

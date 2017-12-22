@@ -21,8 +21,10 @@ def print_digit_info(digits):
 
 print_digit_info(digits)
 
+### Test shuffle ###
+
 # https://stackoverflow.com/questions/4601373/better-way-to-shuffle-two-numpy-arrays-in-unison
-# Although apparently sklearn ahs a ShffleSplit as well
+# Although apparently sklearn has a ShffleSplit as well
 # from sklearn.model_selection import ShuffleSplit
 
 def shuffle_in_unison(a, b):
@@ -31,24 +33,29 @@ def shuffle_in_unison(a, b):
     numpy.random.set_state(rng_state)
     numpy.random.shuffle(b)
 
-### Test shuffle ###
 print("First digits: " + str(digits.target[:5]))
 shuffle_in_unison(digits.data, digits.target)
 print("First digits: " + str(digits.target[:5]))
 
-m = len(digits.data)
-first_index = int(m * 0.6)
-training_set_x = digits.data[0:first_index]
-training_set_y = digits.target[0:first_index]
-second_index = int(m * 0.8)
-cross_validation_set_x = digits.data[first_index:second_index]
-cross_validation_set_y = digits.target[first_index:second_index]
-test_set = digits.data[second_index:]
+### Divide into Training Set, Cross Validation, Test Set ###
+
+def divide_groups(array, train_set_size=0.6, cv_size=0.2):
+    m = len(array)
+    first_index = int(m * train_set_size)
+    second_index = int(m * (train_set_size + cv_size))
+    train = array[:first_index]
+    cv = array[first_index:second_index]
+    test = array[second_index:]
+    return (train, cv, test);
+
+training_set_x, cross_validation_set_x, test_set_x = divide_groups(digits.data)
+training_set_y, cross_validation_set_y, test_set_y = divide_groups(digits.target)
 
 print("training_set length: " + str(len(training_set_x)))
 print("cross_validation_set_x length: " + str(len(cross_validation_set_x)))
-print("test_set length: " + str(len(test_set)))
+print("test_set length: " + str(len(test_set_x)))
 
+### Measuring Accuracy of Predictions ###
 
 def measure_accuracy(clf, train_x, train_y, cross_x, cross_y):
     clf.fit(train_x, train_y)
@@ -56,6 +63,7 @@ def measure_accuracy(clf, train_x, train_y, cross_x, cross_y):
     score = accuracy_score(cross_y, cross_validation_predictions)
     return score
 
+### Select Gamma ###
 
 gamma_exponents = [-8,-7,-6,-5,-4,-3,-2,-1,0,1]
 

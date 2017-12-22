@@ -48,11 +48,11 @@ def divide_groups(array, train_set_size=0.6, cv_size=0.2):
     test = array[second_index:]
     return (train, cv, test);
 
-training_set_x, cross_validation_set_x, test_set_x = divide_groups(digits.data)
-training_set_y, cross_validation_set_y, test_set_y = divide_groups(digits.target)
+train_set_x, cv_set_x, test_set_x = divide_groups(digits.data)
+train_set_y, cv_set_y, test_set_y = divide_groups(digits.target)
 
-print("training_set length: " + str(len(training_set_x)))
-print("cross_validation_set_x length: " + str(len(cross_validation_set_x)))
+print("training_set length: " + str(len(train_set_x)))
+print("cv_set_x length: " + str(len(cross_validation_set_x)))
 print("test_set length: " + str(len(test_set_x)))
 
 ### Measuring Accuracy of Predictions ###
@@ -72,8 +72,7 @@ def accuracy_scores_for(gamma_exp, C=100):
     for exp in gamma_exp:
         gamma = 10 ** exp
         clf = svm.SVC(gamma=gamma, C=C)
-        score = measure_accuracy(clf, training_set_x, training_set_y, cross_validation_set_x,
-            cross_validation_set_y)
+        score = measure_accuracy(clf, train_set_x, train_set_y, cv_set_x, cv_set_y)
         print("Accuracy Score: " + str(score)) # percent correct
         accuracy.append(score)
     return accuracy

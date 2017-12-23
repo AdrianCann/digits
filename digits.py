@@ -52,7 +52,7 @@ train_set_x, cv_set_x, test_set_x = divide_groups(digits.data)
 train_set_y, cv_set_y, test_set_y = divide_groups(digits.target)
 
 print("training_set length: " + str(len(train_set_x)))
-print("cv_set_x length: " + str(len(cross_validation_set_x)))
+print("cv_set_x length: " + str(len(cv_set_x)))
 print("test_set length: " + str(len(test_set_x)))
 
 ### Measuring Accuracy of Predictions ###
@@ -82,3 +82,12 @@ accuracy_scores = accuracy_scores_for(gamma_exponents)
 plt.bar(gamma_exponents, accuracy_scores)
 plt.show()
 # gamma best between 10 ** -6 and 10 ** -3
+
+### Take Best Gamma and calculate accuracy on test set ###
+
+best_index = numpy.argmax(accuracy_scores)
+best_gamma = 10 ** gamma_exponents[best_index]
+clf = svm.SVC(gamma=best_gamma, C=100)
+score = measure_accuracy(clf, train_set_x, train_set_y, test_set_x, test_set_y)
+print("Final Accuracy Score Test Set:" + str(score))
+# ~ 0.99

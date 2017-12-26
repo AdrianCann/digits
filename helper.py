@@ -52,7 +52,7 @@ def measure_accuracy(clf, data):
 
 ### Select Gamma ###
 
-def accuracy_scores_for(data, gamma_exp, C=100):
+def accuracy_scores_for_svm(data, gamma_exp, C=100):
     accuracy = []
     for exp in gamma_exp:
         gamma = 10 ** exp

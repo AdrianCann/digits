@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 from sklearn import datasets
 from sklearn import svm
+from sklearn.neural_network import MLPClassifier
 
 from sklearn.metrics import accuracy_score
 
@@ -61,4 +62,13 @@ def accuracy_scores_for(data, gamma_exp, C=100):
         accuracy.append(score)
     return accuracy
 
+def accuracy_scores_for_nn(data, alpha_exp):
+    accuracy = []
+    for exp in alpha_exp:
+        alpha = 10 ** exp
+        clf = MLPClassifier(solver='lbfgs', alpha=alpha, random_state=1)
+        score = measure_accuracy(clf, data)
+        print("Accuracy Score: " + str(score)) # percent correct
+        accuracy.append(score)
+    return accuracy
 

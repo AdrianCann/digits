@@ -12,7 +12,7 @@ train_set_y, cv_set_y, test_set_y = h.divide_groups(digits.target)
 
 clf = MLPClassifier(
         solver='lbfgs',
-        alpha=1e-5,hidden_layer_sizes=(5, 2),
+        alpha=1e-5,
         random_state=1
         )
 

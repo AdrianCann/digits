@@ -25,6 +25,17 @@ data = (train_set_x, train_set_y, cv_set_x, cv_set_y)
 accuracy_scores = h.accuracy_scores_for_svm(data, gamma_exponents)
 
 plt.bar(gamma_exponents, accuracy_scores)
+plt.title("Accuracy for Gamma Values")
+plt.xlabel("Gamma Values (logarithmic)")
+plt.ylabel("Correct predictions (fraction)")
+plt.show()
+
+gamma_exponents = numpy.arange(-8,1,0.5)
+accuracy_scores = h.accuracy_scores_for_svm(data, gamma_exponents)
+plt.bar(gamma_exponents, accuracy_scores)
+plt.title("Accuracy for Gamma Values")
+plt.xlabel("Gamma Values (logarithmic)")
+plt.ylabel("Correct predictions (fraction)")
 plt.show()
 
 best_index = numpy.argmax(accuracy_scores)

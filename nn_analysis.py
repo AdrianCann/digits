@@ -19,11 +19,23 @@ print("training_set length: " + str(len(train_set_x)))
 print("cv_set_x length: " + str(len(cv_set_x)))
 print("test_set length: " + str(len(test_set_x)))
 
-alpha_exponents = [-10,-8,-6,-4,-2,0,2,4,6,8,10]
+alpha_exponents = [-2,0,2,4,6,8,10] # all action between -2, 2
 data = (train_set_x, train_set_y, cv_set_x, cv_set_y)
 accuracy_scores = h.accuracy_scores_for_nn(data, alpha_exponents)
 
 plt.bar(alpha_exponents, accuracy_scores)
+plt.title("Accuracy for Alpha Values")
+plt.xlabel("Alpha Values (logarithmic)")
+plt.ylabel("Correct predictions (fraction)")
+plt.show()
+
+alpha_exponents = numpy.arange(-4.0, 4.0, 0.5)
+accuracy_scores = h.accuracy_scores_for_nn(data, alpha_exponents)
+plt.bar(alpha_exponents, accuracy_scores, 0.9)
+plt.title("Accuracy for Alpha Values")
+plt.xlabel("Alpha Values (logarithmic)")
+plt.ylabel("Correct predictions (fraction)")
+plt.axis([-5.0,4.5,0.9,1.0,])
 plt.show()
 
 best_index = numpy.argmax(accuracy_scores)

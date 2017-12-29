@@ -72,3 +72,12 @@ def accuracy_scores_for_nn(data, alpha_exp):
         accuracy.append(score)
     return accuracy
 
+def set_labels_nn(plt):
+    plt.title("Accuracy for Alpha Values")
+    plt.xlabel("Alpha Values (logarithmic)")
+    plt.ylabel("Correct predictions (fraction)")
+
+def set_labels_svm(plt):
+    plt.title("Accuracy for Gamma Values")
+    plt.xlabel("Gamma Values (logarithmic)")
+    plt.ylabel("Correct predictions (fraction)")
